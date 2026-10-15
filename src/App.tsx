@@ -23,13 +23,24 @@ const MainAppContent: React.FC = () => {
     return isAuthenticated ? (mode === 'shop' ? 'shop-dashboard' : 'personal-dashboard') : 'welcome';
   });
   const [isAuthOpen, setIsAuthOpen] = useState<boolean>(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
+  const navigateTo = (screen: string) => {
+    if (screen === 'menu-profile') {
+      setIsMenuOpen(true);
+      return;
+    }
+
+    setIsMenuOpen(false);
+    setCurrentScreen(screen);
+  };
 
   const renderActiveScreen = () => {
     switch (currentScreen) {
       case 'welcome':
         return (
           <WelcomeScreen
-            onGetStarted={() => setCurrentScreen('select-mode')}
+            onGetStarted={() => navigateTo('select-mode')}
             onLogin={() => setIsAuthOpen(true)}
           />
         );
@@ -38,60 +49,60 @@ const MainAppContent: React.FC = () => {
           <ModeSelectionScreen
             onSelectPersonal={() => {
               setMode('personal');
-              setCurrentScreen('personal-dashboard');
+              navigateTo('personal-dashboard');
             }}
             onSelectShop={() => {
               setMode('shop');
-              setCurrentScreen('shop-dashboard');
+              navigateTo('shop-dashboard');
             }}
           />
         );
       case 'personal-dashboard':
-        return <PersonalDashboardScreen onNavigate={setCurrentScreen} />;
+        return <PersonalDashboardScreen onNavigate={navigateTo} />;
       case 'personal-add-voice':
         return (
           <VoiceInputPersonalScreen
-            onBack={() => setCurrentScreen('personal-dashboard')}
-            onNavigate={setCurrentScreen}
+            onBack={() => navigateTo('personal-dashboard')}
+            onNavigate={navigateTo}
           />
         );
       case 'personal-insights':
         return (
           <PersonalInsightsScreen
-            onBack={() => setCurrentScreen('personal-dashboard')}
-            onNavigate={setCurrentScreen}
+            onBack={() => navigateTo('personal-dashboard')}
+            onNavigate={navigateTo}
           />
         );
       case 'shop-dashboard':
-        return <ShopDashboardScreen onNavigate={setCurrentScreen} />;
+        return <ShopDashboardScreen onNavigate={navigateTo} />;
       case 'shop-add-product':
         return (
           <AddProductScreen
-            onBack={() => setCurrentScreen('shop-dashboard')}
-            onNavigate={setCurrentScreen}
+            onBack={() => navigateTo('shop-dashboard')}
+            onNavigate={navigateTo}
           />
         );
       case 'shop-record-sale':
         return (
           <RecordSaleScreen
-            onBack={() => setCurrentScreen('shop-dashboard')}
-            onNavigate={setCurrentScreen}
+            onBack={() => navigateTo('shop-dashboard')}
+            onNavigate={navigateTo}
           />
         );
       case 'shop-insights':
         return (
           <ShopInsightsScreen
-            onBack={() => setCurrentScreen('shop-dashboard')}
-            onNavigate={setCurrentScreen}
+            onBack={() => navigateTo('shop-dashboard')}
+            onNavigate={navigateTo}
           />
         );
       case 'menu-profile':
         return (
           <MenuProfileScreen
-            onNavigate={setCurrentScreen}
+            onNavigate={navigateTo}
             onLogout={() => {
               logout();
-              setCurrentScreen('welcome');
+              navigateTo('welcome');
             }}
           />
         );
@@ -99,20 +110,20 @@ const MainAppContent: React.FC = () => {
         return (
           <ReportsScreen
             reportType="personal"
-            onBack={() => setCurrentScreen('personal-dashboard')}
+            onBack={() => navigateTo('personal-dashboard')}
           />
         );
       case 'shop-reports':
         return (
           <ReportsScreen
             reportType="shop"
-            onBack={() => setCurrentScreen('shop-dashboard')}
+            onBack={() => navigateTo('shop-dashboard')}
           />
         );
       case 'settings':
         return (
           <SettingsScreen
-            onBack={() => setCurrentScreen(mode === 'personal' ? 'personal-dashboard' : 'shop-dashboard')}
+            onBack={() => navigateTo(mode === 'personal' ? 'personal-dashboard' : 'shop-dashboard')}
           />
         );
       case 'help':
@@ -136,7 +147,7 @@ const MainAppContent: React.FC = () => {
             </div>
             <button
               type="button"
-              onClick={() => setCurrentScreen(mode === 'personal' ? 'personal-dashboard' : 'shop-dashboard')}
+              onClick={() => navigateTo(mode === 'personal' ? 'personal-dashboard' : 'shop-dashboard')}
               className="w-full py-3.5 bg-[#5145D8] hover:bg-[#4338CA] text-white rounded-2xl text-xs font-bold shadow-md transition-all active:scale-[0.98]"
             >
               Back to Dashboard
@@ -144,18 +155,28 @@ const MainAppContent: React.FC = () => {
           </div>
         );
       default:
-        return <PersonalDashboardScreen onNavigate={setCurrentScreen} />;
+        return <PersonalDashboardScreen onNavigate={navigateTo} />;
     }
   };
 
   return (
     <div className="min-h-[100dvh] w-full bg-[#070B1E] text-slate-100 flex flex-col items-center justify-start overflow-x-hidden selection:bg-[#5145D8] selection:text-white">
-      {/* Responsive Customer Application Container:
-          - Fluid full-width edge-to-edge on mobile phones (320px–767px)
-          - Centered in a refined, beautifully proportioned mobile-width application frame on tablet & desktop (768px+)
-      */}
-      <div className="w-full max-w-full md:max-w-[430px] lg:max-w-[450px] min-h-[100dvh] flex flex-col bg-[#0B1431] md:my-6 md:min-h-[820px] md:max-h-[92vh] md:rounded-[40px] md:shadow-2xl md:border md:border-slate-800/80 overflow-hidden relative">
-        {renderActiveScreen()}
+      <div className="w-full max-w-full md:max-w-[900px] lg:max-w-[1440px] min-h-[100dvh] md:min-h-[calc(100dvh-3rem)] flex bg-[#0B1431] md:my-6 md:rounded-[32px] md:shadow-2xl md:border md:border-slate-800/80 overflow-hidden relative">
+        {currentScreen !== 'welcome' && currentScreen !== 'select-mode' && (
+          <MenuProfileScreen
+            isDrawer
+            isOpen={isMenuOpen}
+            onClose={() => setIsMenuOpen(false)}
+            onNavigate={navigateTo}
+            onLogout={() => {
+              logout();
+              navigateTo('welcome');
+            }}
+          />
+        )}
+        <main className="min-w-0 flex-1 flex flex-col">
+          {renderActiveScreen()}
+        </main>
       </div>
 
       {/* Interactive Modals & Dialogs */}

@@ -1,14 +1,20 @@
 import React from 'react';
-import { Home, User, Store, FileText, Settings, HelpCircle, LogOut, ChevronRight } from 'lucide-react';
+import { Home, User, Store, FileText, Settings, HelpCircle, LogOut, ChevronRight, X } from 'lucide-react';
 import { FinoraLogo } from '../components/common/FinoraLogo';
 import { useFinance } from '../context/FinanceContext';
 
 interface MenuProfileScreenProps {
+  isDrawer?: boolean;
+  isOpen?: boolean;
+  onClose?: () => void;
   onNavigate: (screen: string) => void;
   onLogout: () => void;
 }
 
 export const MenuProfileScreen: React.FC<MenuProfileScreenProps> = ({
+  isDrawer = false,
+  isOpen = true,
+  onClose = () => {},
   onNavigate,
   onLogout
 }) => {
@@ -20,7 +26,18 @@ export const MenuProfileScreen: React.FC<MenuProfileScreenProps> = ({
   };
 
   return (
-    <div className="relative w-full flex-1 min-h-[100dvh] bg-[#0B1431] text-white flex flex-col justify-between p-4 sm:p-5 select-none overflow-hidden">
+    <div className={isDrawer ? `fixed inset-0 z-40 lg:static lg:inset-auto lg:z-auto ${isOpen ? '' : 'invisible pointer-events-none'} lg:visible lg:pointer-events-auto` : 'relative w-full flex-1 min-h-[100dvh]'}>
+      {isDrawer && (
+        <button
+          type="button"
+          onClick={onClose}
+          className={`absolute inset-0 bg-black/60 transition-opacity lg:hidden ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+          aria-label="Close navigation menu"
+        />
+      )}
+      <aside className={isDrawer
+        ? `absolute inset-y-0 left-0 z-10 flex w-[min(88vw,20rem)] flex-col bg-[#0B1431] p-4 text-white shadow-2xl transition-transform sm:p-5 ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:relative lg:inset-auto lg:z-auto lg:min-h-[100dvh] lg:w-64 lg:shrink-0 lg:translate-x-0 lg:border-r lg:border-slate-800/80 lg:shadow-none`
+        : 'relative flex w-full flex-1 flex-col justify-between overflow-hidden bg-[#0B1431] p-4 text-white sm:p-5'}>
       {/* Decorative Wave Lines at Bottom (matching reference) */}
       <div className="absolute bottom-0 left-0 right-0 h-44 pointer-events-none overflow-hidden opacity-50">
         <svg
@@ -56,17 +73,27 @@ export const MenuProfileScreen: React.FC<MenuProfileScreenProps> = ({
 
       {/* Top Header */}
       <div className="z-10">
-        <div className="flex items-center justify-between pt-2 pb-4">
+        <div className="flex items-center justify-between gap-2 pt-2 pb-4">
           <FinoraLogo size="sm" variant="light" />
 
-          <button
-            type="button"
-            onClick={() => onNavigate('settings')}
-            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/15 flex items-center justify-center text-white transition-colors"
-            aria-label="Settings"
-          >
-            <Settings size={16} />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/15 flex items-center justify-center text-white transition-colors lg:hidden"
+              aria-label="Close navigation menu"
+            >
+              <X size={16} />
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('settings')}
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/15 flex items-center justify-center text-white transition-colors"
+              aria-label="Settings"
+            >
+              <Settings size={16} />
+            </button>
+          </div>
         </div>
 
         {/* Profile Avatar Card */}
@@ -182,6 +209,7 @@ export const MenuProfileScreen: React.FC<MenuProfileScreenProps> = ({
           FINORA v1.0.0
         </span>
       </div>
+      </aside>
     </div>
   );
 };

@@ -17,6 +17,13 @@
     color: #111B3B;
     overflow-x: hidden;
   }
+
+  input,
+  select,
+  textarea {
+    min-width: 0;
+    max-width: 100%;
+  }
 }
 
 /* Custom animations for microphone and interactions */

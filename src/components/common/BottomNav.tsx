@@ -19,7 +19,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
 
   return (
     <div
-      className={`w-full bg-[#0B1431] border-t border-slate-800/80 px-6 py-2.5 flex items-center justify-between text-slate-400 select-none ${className}`}
+      className={`w-full bg-[#0B1431] border-t border-slate-800/80 px-4 sm:px-6 py-2.5 flex items-center justify-between text-slate-400 select-none lg:hidden ${className}`}
     >
       {/* 1. Home */}
       <button

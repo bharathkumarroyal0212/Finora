@@ -108,7 +108,7 @@ export const PersonalDashboardScreen: React.FC<PersonalDashboardScreenProps> = (
         </div>
 
         {/* 2. Three Metric Sub-Cards Row (Expenses, Income, Savings) */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-2.5 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5 mb-5">
           {/* Expenses */}
           <div className="bg-white rounded-2xl p-2 sm:p-2.5 shadow-sm text-left flex flex-col justify-between min-w-0">
             <div className="w-6 h-6 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center mb-1.5 shrink-0">

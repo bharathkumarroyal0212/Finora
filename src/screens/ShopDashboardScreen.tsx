@@ -59,7 +59,7 @@ export const ShopDashboardScreen: React.FC<ShopDashboardScreenProps> = ({
         </div>
 
         {/* 2x2 Financial Cards Grid (exact placement per specification) */}
-        <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mb-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-2.5 mb-5">
           {/* Card 1: Total Sales */}
           <div className="bg-white rounded-3xl p-3 sm:p-3.5 shadow-card text-left flex flex-col justify-between min-w-0">
             <div className="flex items-center justify-between mb-2">
