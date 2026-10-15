@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5" />
+      <stop offset="100%" stop-color="#7C3AED" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DFBA73" />
+      <stop offset="100%" stop-color="#B59458" />
+    </linearGradient>
+  </defs>
+  <!-- Stylized F Mark matching Finora reference -->
+  <path d="M22 18 C38 18 68 18 80 26 C86 30 84 42 74 46 C60 51 46 51 38 52 L38 84 C38 88 32 90 28 88 C24 86 22 82 22 78 Z" fill="url(#purpleGrad)" />
+  <path d="M42 46 C52 46 72 46 78 52 C84 56 82 66 70 70 C58 74 46 74 42 74" fill="url(#goldGrad)" opacity="0.95" />
+</svg>
